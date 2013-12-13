@@ -9,7 +9,7 @@ x86mm: $(OBJS)
 	gcc -o x86mm $(CFLAGS) $(OBJS)
 
 clean:
-	-rm trace_cal *.o *.d
+	-rm x86mm *.o *.d
 
 %.d:%.c Makefile
 	@$(SHELL) -ec '$(DEPEND) $< | sed '\''s/\($*\.o\)[ :]*/\1 $@ : /g'\'' > $@'
