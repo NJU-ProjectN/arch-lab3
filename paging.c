@@ -22,13 +22,13 @@ void read_kpage(char *filename) {
 	int i;
 	for(i = 0; i < NR_PDE_ENTRY; i ++) {
 		uint32_t kpagetable_offset;
-		fscanf(fp, "%u %03x\n", &kpagetable_offset,  (uint32_t*)&kpagedir[i]);
+		assert( fscanf(fp, "%u %03x\n", &kpagetable_offset,  (uint32_t*)&kpagedir[i]) == 2);
 		if(kpagedir[i].present)
 			kpagedir[i].page_frame = (uint32_t)(kpagetable + kpagetable_offset) >> 12;
 	}
 
 	for(i = 0; i < USER_MEM_HIGH / PAGE_SIZE; i ++) {
-		fscanf(fp, "%08x\n", (uint32_t*)&kpagetable[i]);
+		assert( fscanf(fp, "%08x\n", (uint32_t*)&kpagetable[i]) == 1);
 	}
 	fclose(fp);
 }
@@ -39,7 +39,7 @@ void read_upage(char *filename) {
 	for(i = 0; i < NR_PDE_ENTRY * NR_PROCESS; i ++) {
 		uint32_t upagetable_offset;
 		uint8_t flag;
-		fscanf(fp, "%c %u %03x\n", &flag, &upagetable_offset,  (uint32_t*)&upagedir[0][i]);
+		assert( fscanf(fp, "%c %u %03x\n", &flag, &upagetable_offset,  (uint32_t*)&upagedir[0][i]) == 3);
 		if(upagedir[0][i].present) {
 			if(flag == 'u')
 				upagedir[0][i].page_frame = (uint32_t)(upagetable + upagetable_offset) >> 12;
@@ -54,7 +54,7 @@ void read_upage(char *filename) {
 	}
 
 	for(i = 0; i < (USER_MEM_HIGH - USER_MEM_LOW) / PAGE_SIZE; i ++) {
-		fscanf(fp, "%08x\n", (uint32_t*)&upagetable[i]);
+		assert( fscanf(fp, "%08x\n", (uint32_t*)&upagetable[i]) == 1);
 	}
 	fclose(fp);
 }
